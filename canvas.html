@@ -33,27 +33,47 @@
     var c = document.getElementById("slate");
     var content = c.getContext("2d");
     content.fillStyle = "#8181F7";
+    content.beginPath();
 
     //----clear function----
     var clear = function(event){
         content.clearRect(0,0,c.width,c.height);
+        content.beginPath();
     }
 
     //----draw the rectangles----
-    var drawRect = function(event){
+    var drawRandRect = function(event){
         var x = event.offsetX;
         var y = event.offsetY;
 
         var width = (Math.random() * 25) + 25;
         var height = (Math.random() * 25) + 25;
 
-        content.fillRect(x,y,x+width,y-height);
+        content.fillRect(x,y,width,height);
 
     }
 
-    //----assign event listeners----
+    //----rectangle of certain size----
+    var drawRect = function(event){
+
+        var width = 5;
+        var height = 5;
+
+        content.fillRect(event.offsetX,event.offsetY,width,height);
+
+    }
+
+    //----dot drawing function----
+    var draw  = function(event){
+        drawRect(event);
+        content.lineTo(event.offsetX,event.offsetY);
+        content.stroke();
+    }
+
+    //----assign event listeners, etc.----
     b.addEventListener('click',clear);
-    c.addEventListener('click',drawRect);
+
+    c.addEventListener('click',draw);
 
 </script>
 
