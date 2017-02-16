@@ -1,0 +1,84 @@
+<html>
+
+<head>
+    <title>I'm an Animation</title>
+</head>
+
+<body>
+    <center><canvas height ="500" width="500" id="slate"></canvas></center>
+    <center><p><button id="stop">Stop</button></p></center>
+</body>
+
+<style>
+    #slate{
+        border: 2px solid black;
+        background-color: #CECEF6;
+        cursor: pointer;
+    }
+
+    #clear{
+        background-color: #8181F7;
+        border: 1px solid black;
+        cursor: pointer;
+    }
+</style>
+
+<script>
+
+    //----declare variables----
+    var requestID = 0;
+    //clear button
+    var b = document.getElementById("stop");
+
+    //canvas
+    var c = document.getElementById("slate");
+    var content = c.getContext("2d");
+    content.fillStyle = "#8181F7";
+    content.beginPath();
+
+    //----clear function----
+    var clear = function(event){
+        event.preventDefault();
+        content.clearRect(0,0,c.width,c.height);
+        content.beginPath();
+    }
+
+    var animate  = function(event){
+
+        //kill anyone who was here before you
+        window.cancelAnimationFrame(requestID);
+
+        //draw a circle
+        var radius = 50;
+        var xcor = 10;
+        var ycor = c.height/2;
+
+        var drawDot = function(){
+            //clear the screen
+            content.clearRect(0,0,c.width,c.height);
+
+            content.beginPath();
+            content.arc(xcor,ycor,radius,0,2*Math.PI);
+            content.fillRect(xcor-40,ycor,30,30);
+            content.stroke();
+            content.fill();
+
+            xcor++;
+
+            requestID = window.requestAnimationFrame(drawDot);
+        };
+
+        drawDot();
+    }
+
+    var stop = function(event){
+        window.cancelAnimationFrame(requestID);
+    }
+
+    //----assign event listeners, etc.----
+    b.addEventListener('click',stop);
+    c.addEventListener('click',animate);
+
+</script>
+
+</html>
